@@ -11,15 +11,10 @@ namespace simplerpg
         {
             InitializeComponent();
 
-            _player = new Player();
-            _player.CurrentHitPoints = 10;
-            _player.MaxHitPoints = 10;
-            _player.gold = 20;
-            _player.ExperiencePoints = 0;
-            _player.Level = 1;
+            _player = new Player(20,0,1,10,10);
 
             lblHitPoints.Text = _player.CurrentHitPoints.ToString();
-            lblGold.Text = _player.gold.ToString();
+            lblGold.Text = _player.Gold.ToString();
             lblExperience.Text = _player.ExperiencePoints.ToString();
             lblLevel.Text = _player.Level.ToString();
 
