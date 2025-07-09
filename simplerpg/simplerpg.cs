@@ -13,9 +13,9 @@ namespace simplerpg
 
             _player = new Player();
             _player.CurrentHitPoints = 10;
-            _player.MaximumHitPoints = 10;
+            _player.MaxHitPoints = 10;
             _player.gold = 20;
-            _player.ExperiencePoints = 10;
+            _player.ExperiencePoints = 0;
             _player.Level = 1;
 
             lblHitPoints.Text = _player.CurrentHitPoints.ToString();
