@@ -13,7 +13,7 @@ namespace Engine
         public string Desc { get; set; }
         public int RewardExpPoints { get; set; }
         public int RewardGold { get; set; }
-
+        public Item RewardItem { get; set; }
         public Quest(int id, string name, string desc, int rewardExpPoints, int rewardGold)
         {
             ID = id;
