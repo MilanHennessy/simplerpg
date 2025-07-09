@@ -22,6 +22,9 @@ namespace simplerpg
             lblGold.Text = _player.gold.ToString();
             lblExperience.Text = _player.ExperiencePoints.ToString();
             lblLevel.Text = _player.Level.ToString();
+
+            Location location = new Location(1, "Home", "This is your home");
+
         }
 
         private void simplerpg_Load(object sender, EventArgs e)

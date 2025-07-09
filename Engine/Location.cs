@@ -12,5 +12,11 @@ namespace Engine
         public string Name { get; set; }
         public string Desc { get; set; }
 
+        public Location(int id, string name, string desc)
+        {
+            ID = id;
+            Name = name;
+            Desc = desc;
+        }
     }
 }
