@@ -58,7 +58,6 @@ namespace simplerpg
             // 
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(18, 20);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(72, 17);
             this.label1.TabIndex = 0;
@@ -68,7 +67,6 @@ namespace simplerpg
             // 
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(18, 46);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(42, 17);
             this.label2.TabIndex = 1;
@@ -78,7 +76,6 @@ namespace simplerpg
             // 
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(18, 74);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(82, 17);
             this.label3.TabIndex = 2;
@@ -88,7 +85,6 @@ namespace simplerpg
             // 
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(18, 100);
-            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(46, 17);
             this.label4.TabIndex = 3;
@@ -97,8 +93,7 @@ namespace simplerpg
             // lblHitPoints
             // 
             this.lblHitPoints.AutoSize = true;
-            this.lblHitPoints.Location = new System.Drawing.Point(110, 19);
-            this.lblHitPoints.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblHitPoints.Location = new System.Drawing.Point(100, 19);
             this.lblHitPoints.Name = "lblHitPoints";
             this.lblHitPoints.Size = new System.Drawing.Size(0, 17);
             this.lblHitPoints.TabIndex = 4;
@@ -107,7 +102,6 @@ namespace simplerpg
             // 
             this.lblGold.AutoSize = true;
             this.lblGold.Location = new System.Drawing.Point(110, 45);
-            this.lblGold.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblGold.Name = "lblGold";
             this.lblGold.Size = new System.Drawing.Size(0, 17);
             this.lblGold.TabIndex = 5;
@@ -116,7 +110,6 @@ namespace simplerpg
             // 
             this.lblExperience.AutoSize = true;
             this.lblExperience.Location = new System.Drawing.Point(110, 73);
-            this.lblExperience.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblExperience.Name = "lblExperience";
             this.lblExperience.Size = new System.Drawing.Size(0, 17);
             this.lblExperience.TabIndex = 6;
@@ -125,7 +118,6 @@ namespace simplerpg
             // 
             this.lblLevel.AutoSize = true;
             this.lblLevel.Location = new System.Drawing.Point(110, 99);
-            this.lblLevel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblLevel.Name = "lblLevel";
             this.lblLevel.Size = new System.Drawing.Size(0, 17);
             this.lblLevel.TabIndex = 7;
@@ -138,7 +130,6 @@ namespace simplerpg
             this.label5.Size = new System.Drawing.Size(90, 17);
             this.label5.TabIndex = 8;
             this.label5.Text = "Select Action";
-            this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // cboWeapons
             // 
@@ -227,6 +218,7 @@ namespace simplerpg
             // 
             this.rtbMessages.Location = new System.Drawing.Point(347, 130);
             this.rtbMessages.Name = "rtbMessages";
+            this.rtbMessages.ReadOnly = true;
             this.rtbMessages.Size = new System.Drawing.Size(360, 286);
             this.rtbMessages.TabIndex = 18;
             this.rtbMessages.Text = "";
@@ -235,7 +227,7 @@ namespace simplerpg
             // 
             this.dgvInventory.AllowUserToAddRows = false;
             this.dgvInventory.AllowUserToDeleteRows = false;
-            this.dgvInventory.AllowUserToResizeRows = false;
+            this.dgvInventory.AllowUserToResizeColumns = false;
             this.dgvInventory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvInventory.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvInventory.Enabled = false;
@@ -253,7 +245,7 @@ namespace simplerpg
             // 
             this.dgvQuests.AllowUserToAddRows = false;
             this.dgvQuests.AllowUserToDeleteRows = false;
-            this.dgvQuests.AllowUserToResizeRows = false;
+            this.dgvQuests.AllowUserToResizeColumns = false;
             this.dgvQuests.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvQuests.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvQuests.Enabled = false;
@@ -264,14 +256,12 @@ namespace simplerpg
             this.dgvQuests.RowHeadersVisible = false;
             this.dgvQuests.RowHeadersWidth = 51;
             this.dgvQuests.RowTemplate.Height = 24;
-            this.dgvQuests.Size = new System.Drawing.Size(312, 189);
+            this.dgvQuests.Size = new System.Drawing.Size(312, 309);
             this.dgvQuests.TabIndex = 20;
             // 
             // simplerpg
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(959, 801);
+            this.ClientSize = new System.Drawing.Size(717, 643);
             this.Controls.Add(this.dgvQuests);
             this.Controls.Add(this.dgvInventory);
             this.Controls.Add(this.rtbMessages);
@@ -293,16 +283,14 @@ namespace simplerpg
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "simplerpg";
-            this.Text = "simplerpg";
-            this.Load += new System.EventHandler(this.simplerpg_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvInventory)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvQuests)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
+
 
         #endregion
 

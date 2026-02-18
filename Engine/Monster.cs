@@ -10,8 +10,8 @@ namespace Engine
     {
         public int ID { get; set; }
         public string Name { get; set; }
-        public int MaxDmg { get; set; }
-        public int RewardExpPoints { get; set; }
+        public int MaximumDamage { get; set; }
+        public int RewardExperiencePoints { get; set; }
         public int RewardGold { get; set; }
         public List<LootItem> LootTable { get; set; }
         public Monster(int id, string name, int maxDmg, int rewardExpPoints, int rewardGold,
@@ -20,8 +20,8 @@ namespace Engine
         {
             ID = id;
             Name = name;
-            MaxDmg = maxDmg;
-            RewardExpPoints = rewardExpPoints;
+            MaximumDamage = maxDmg;
+            RewardExperiencePoints = rewardExpPoints;
             RewardGold = rewardGold;
             LootTable = new List<LootItem>();
         }

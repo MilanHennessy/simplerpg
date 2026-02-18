@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Engine
 {
-    public class ItemInventory
+    public class InventoryItem
     {
         public Item Details { get; set; }
         public int Quantity { get; set; }
-        public ItemInventory(Item details, int quantity)
+        public InventoryItem(Item details, int quantity)
         {
             Details = details;
             Quantity = quantity;
