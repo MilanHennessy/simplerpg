@@ -274,8 +274,52 @@ namespace simplerpg
             }
         }
 
+        private void UpdateQuestListInUI()
+        {
+            dgvQuests.RowHeadersVisible = false;
 
+            dgvQuests.ColumnCount = 2;
+            dgvQuests.Columns[0].Name = "Name";
+            dgvQuests.Columns[0].Width = 197;
+            dgvQuests.Columns[1].Name = "Done?";
 
+            dgvQuests.Rows.Clear();
+
+            foreach(PlayerQuest playerQuest in _player.Quests)
+            {
+                dgvQuests.Rows.Add(new[] { playerQuest.Details.Name, playerQuest.IsCompleted.ToString() });
+            }
+        }
+
+        private void UpdateWeaponListInUI()
+        {
+            List<Weapon> weapons = new List<Weapon>();
+
+            foreach(InventoryItem inventoryItem in _player.Inventory)
+            {
+                if(inventoryItem.Details is Weapon)
+                {
+                    if(inventoryItem.Quantity > 0)
+                    {
+                        weapons.Add((Weapon)inventoryItem.Details);
+                    }
+                }
+            }
+
+            if(weapons.Count == 0)
+            {
+                cboWeapons.Visible = false;
+                btnUseWeapon.Visible = false;
+            }
+            else
+            {
+                cboWeapons.DataSource = weapons;
+                cboWeapons.DisplayMember = "Name";
+                cboWeapons.ValueMember = "ID";
+
+                cboWeapons.SelectedIndex = 0;
+            }
+        }
 
         private void UpdatePotionListInUI()
         {
