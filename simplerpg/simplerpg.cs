@@ -182,9 +182,19 @@ namespace simplerpg
                 btnUsePotion.Visible = false;
             }
 
-            // Refresh player's inventory list
-            dgvInventory.RowHeadersVisible = false;
+            UpdateInventoryListinUI();
 
+            UpdateQuestListInUI();
+
+            UpdateWeaponListInUI();
+
+            UpdatePotionListInUI();
+       
+        }
+
+        private void UpdateInventoryListinUI()
+        {
+            dgvInventory.RowHeadersVisible = false;
             dgvInventory.ColumnCount = 2;
             dgvInventory.Columns[0].Name = "Name";
             dgvInventory.Columns[0].Width = 197;
@@ -198,79 +208,6 @@ namespace simplerpg
                 {
                     dgvInventory.Rows.Add(new[] { inventoryItem.Details.Name, inventoryItem.Quantity.ToString() });
                 }
-            }
-
-            // Refresh player's quest list
-            dgvQuests.RowHeadersVisible = false;
-
-            dgvQuests.ColumnCount = 2;
-            dgvQuests.Columns[0].Name = "Name";
-            dgvQuests.Columns[0].Width = 197;
-            dgvQuests.Columns[1].Name = "Done?";
-
-            dgvQuests.Rows.Clear();
-
-            foreach (PlayerQuest playerQuest in _player.Quests)
-            {
-                dgvQuests.Rows.Add(new[] { playerQuest.Details.Name, playerQuest.IsCompleted.ToString() });
-            }
-
-            // Refresh player's weapons combobox
-            List<Weapon> weapons = new List<Weapon>();
-
-            foreach (InventoryItem inventoryItem in _player.Inventory)
-            {
-                if (inventoryItem.Details is Weapon)
-                {
-                    if (inventoryItem.Quantity > 0)
-                    {
-                        weapons.Add((Weapon)inventoryItem.Details);
-                    }
-                }
-            }
-
-            if (weapons.Count == 0)
-            {
-                // The player doesn't have any weapons, so hide the weapon combobox and "Use" button
-                cboWeapons.Visible = false;
-                btnUseWeapon.Visible = false;
-            }
-            else
-            {
-                cboWeapons.DataSource = weapons;
-                cboWeapons.DisplayMember = "Name";
-                cboWeapons.ValueMember = "ID";
-
-                cboWeapons.SelectedIndex = 0;
-            }
-
-            // Refresh player's potions combobox
-            List<HealingPotion> healingPotions = new List<HealingPotion>();
-
-            foreach (InventoryItem inventoryItem in _player.Inventory)
-            {
-                if (inventoryItem.Details is HealingPotion)
-                {
-                    if (inventoryItem.Quantity > 0)
-                    {
-                        healingPotions.Add((HealingPotion)inventoryItem.Details);
-                    }
-                }
-            }
-
-            if (healingPotions.Count == 0)
-            {
-                // The player doesn't have any potions, so hide the potion combobox and "Use" button
-                cboPotions.Visible = false;
-                btnUsePotion.Visible = false;
-            }
-            else
-            {
-                cboPotions.DataSource = healingPotions;
-                cboPotions.DisplayMember = "Name";
-                cboPotions.ValueMember = "ID";
-
-                cboPotions.SelectedIndex = 0;
             }
         }
 
@@ -352,14 +289,131 @@ namespace simplerpg
         }
         private void btnUseWeapon_Click(object sender, EventArgs e)
         {
+            Weapon currentWeapon = (Weapon)cboWeapons.SelectedItem;
 
+            int damageToMonster = RandomNumberGenerator.Numberbetween(currentWeapon.MinDmg, currentWeapon.MaxDmg);
+
+            _currentMonster.CurrentHitPoints -= damageToMonster;
+
+            rtbMessages.Text += "Yout hit the " + _currentMonster.Name + " for " + damageToMonster.ToString() + " points." + Environment.NewLine;
+
+            if(_currentMonster.CurrentHitPoints <= 0)
+            {
+                rtbMessages.Text += Environment.NewLine;
+                rtbMessages.Text += "You defeated the " + _currentMonster.Name + Environment.NewLine;
+
+                _player.ExperiencePoints += _currentMonster.RewardExperiencePoints;
+                rtbMessages.Text += "You receive " + _currentMonster.RewardExperiencePoints.ToString() + " experience points " + Environment.NewLine;
+
+                _player.Gold += _currentMonster.RewardGold;
+                rtbMessages.Text += "You receive " + _currentMonster.RewardGold.ToString() + " gold" + Environment.NewLine;
+
+                List<InventoryItem> lootedItems = new List<InventoryItem>();
+
+                foreach(LootItem lootItem in _currentMonster.LootTable)
+                {
+                    if(RandomNumberGenerator.Numberbetween(1,100) <= lootItem.DropPercentage)
+                    {
+                        lootedItems.Add(new InventoryItem(lootItem.Details, 1));
+                    }
+                }
+
+                if(lootedItems.Count == 0)
+                {
+                    foreach(LootItem lootItem in _currentMonster.LootTable)
+                    {
+                        if(lootItem.IsDefaultItem)
+                        {
+                            lootedItems.Add(new InventoryItem(lootItem.Details, 1));
+                        }
+                    }
+                }
+
+                foreach(InventoryItem inventoryItem in lootedItems)
+                {
+                    _player.AddItemToInventory(inventoryItem.Details);
+
+                    if(inventoryItem.Quantity == 1)
+                    {
+                       rtbMessages.Text += "You loot " + inventoryItem.Quantity.ToString() + " " + inventoryItem.Details.Name + Environment.NewLine;
+
+                    }
+                    else
+                    {
+                        rtbMessages.Text += "You loot " + inventoryItem.Quantity.ToString() + " " + inventoryItem.Details.NamePlural + Environment.NewLine;
+                    }
+                }
+
+                lblHitPoints.Text = _player.CurrentHitPoints.ToString();
+                lblGold.Text = _player.Gold.ToString();
+                lblExperience.Text = _player.Gold.ToString();
+                lblLevel.Text = _player.Level.ToString();
+
+                UpdateInventoryListinUI();
+                UpdateWeaponListInUI();
+                UpdatePotionListInUI();
+
+                rtbMessages.Text += Environment.NewLine;
+
+                MoveTo(_player.CurrentLocation);
+            }
+            else
+            {
+                int damageToPlayer = RandomNumberGenerator.Numberbetween(0, _currentMonster.MaximumDamage);
+
+                rtbMessages.Text += "The " + _currentMonster.Name + " did " + damageToPlayer.ToString() + " points of damage." + Environment.NewLine;
+
+                _player.CurrentHitPoints -= damageToPlayer;
+
+                lblHitPoints.Text = _player.CurrentHitPoints.ToString();
+
+                if(_player.CurrentHitPoints <= 0)
+                {
+                    rtbMessages.Text += "The " + _currentMonster.Name + " killed you." + Environment.NewLine;
+
+                    MoveTo(World.LocationByID(World.LOCATION_ID_HOME));
+                }
+            }
         }
 
         private void btnUsePotion_Click(object sender, EventArgs e)
         {
+            HealingPotion potion = (HealingPotion)cboPotions.SelectedItem;
 
+            _player.CurrentHitPoints = (_player.CurrentHitPoints + potion.AmountHeal);
+
+            if(_player.CurrentHitPoints > _player.MaximumHitPoints)
+            {
+                _player.CurrentHitPoints = _player.MaximumHitPoints;
+            }
+
+            foreach(InventoryItem ii in _player.Inventory)
+            {
+                if(ii.Details.ID == potion.ID)
+                {
+                    ii.Quantity--;
+                    break;
+                }
+            }
+
+            rtbMessages.Text += "You drink a " + potion.Name + Environment.NewLine;
+
+            int damageToPlayer = RandomNumberGenerator.Numberbetween(0, _currentMonster.MaximumDamage);
+
+            rtbMessages.Text += "The " + _currentMonster.Name + " did " + damageToPlayer.ToString() + " points of damage." + Environment.NewLine;
+
+            _player.CurrentHitPoints -= damageToPlayer;
+
+            if(_player.CurrentHitPoints <= 0)
+            {
+                rtbMessages.Text += "The " + _currentMonster.Name + " killed you." + Environment.NewLine;
+
+                MoveTo(World.LocationByID(World.LOCATION_ID_HOME));
+            }
+
+            lblHitPoints.Text = _player.CurrentHitPoints.ToString();
+            UpdateInventoryListinUI();
+            UpdatePotionListInUI();
         }
-
-
     }
 }
